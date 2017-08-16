@@ -1,0 +1,36 @@
+.gravity-right {
+  float:right;
+}
+.service-name {
+  font-family: 'Helvetica';
+  font-size: 20px;
+  text-align: center;
+}
+
+.time-block {
+  font-size: 25px;
+  color: red;
+  text-align: center;
+}
+.time-unblock {
+  font-size: 25px;
+  color: #4caf50;
+  text-align: center;
+}
+.center {
+  text-align: center;
+}
+
+.menu-thumb {
+  width: 50px; 
+  height: 50px;
+}
+
+.btn-control {
+  background-color: #4caf50;
+}
+
+.host-name {
+  font-family: 'Helvetica';
+  font-size: 25px;
+}

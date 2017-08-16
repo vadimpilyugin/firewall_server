@@ -1,0 +1,40 @@
+doctype html
+html
+  == slim :head
+  body
+    div class="section"
+      div class="row"
+        div class="col-md-2"
+        div class="col-md-8"
+          - if @hosts.nil? || @hosts.empty?
+            == empty_firewall
+          - else
+            table class="table table-condensed"
+              tbody
+                - @hosts.each do |host|
+                  tr 
+                    td class="host-name" #{host.name.nil? || host.name.empty? ? "Хост #{host.ip}" : host.name}
+                    td colspan="3" 
+                      button type="button" class="btn btn-link" onclick="addRule('#{host.ip}')" Добавить правило
+                      button type="button" class="btn btn-link" onclick="deleteHost('#{host.ip}')" Удалить хост
+                  - if host.services.empty?
+                    tr
+                      td colspan="3" Добавьте правила :)
+                  - else
+                    - host.services.each do |srv|
+                      - site = Site.first(id:srv.name)
+                      tr
+                        td align="center"
+                          img src="#{site.icon}" alt="#{site.name}" class="menu-thumb"
+                        td align="center" class="service-name"
+                          == site.name
+                        td align="center" class="#{srv.is_filtered ? "time-block" : "time-unblock"}" 
+                          == srv.is_filtered ? "Заблокирован" : "Доступен"
+                        td align="center"
+                          - if srv.is_filtered
+                            button class="btn btn-success" onclick="unblockService('#{host.ip}','#{srv.name}')" Разблокировать
+                          - else
+                            button class="btn btn-danger" onclick="blockService('#{host.ip}','#{srv.name}')" Заблокировать
+
+          button type="button" class="btn btn-outline-primary btn-lg btn-block" onclick="addTarget()" Добавить цели
+        div class="col-md-2"
