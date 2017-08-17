@@ -70,6 +70,9 @@ end
 post '/add_rule' do
     HostModel.add_service(params['host_ip'],params['service'])
 end
+post '/delete_rule' do
+    HostModel.remove_service(params['host_ip'],params['service'])
+end
 post '/delete_host' do
     fwl_model.remove_host params["host_ip"]
     ArpspoofModel.delete_host params["host_ip"]
@@ -79,6 +82,9 @@ post '/unblock_service' do
 end
 post '/block_service' do
     HostModel.block_service params["host_ip"], params["service"]
+end
+post '/rename_host' do
+    fwl_model.rename_host params["ip"], params["host_name"]
 end
 
 # post '/controls/playYoutube' do

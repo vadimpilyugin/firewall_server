@@ -54,7 +54,7 @@ function addTarget() {
 		let xhttp = new XMLHttpRequest();
 		xhttp.open("POST", `/add_host?host_ip=${host_ip}`, false);
 		xhttp.send();
-		window.location.reload(true); // загрузка страницы с сервера
+		window.location.reload(false); // загрузка страницы с сервера
 	}
 	else if (host_ip != null)
 		alert ("Некорректный IP!");
@@ -80,7 +80,17 @@ function deleteHost(ip) {
 		let xhttp = new XMLHttpRequest();
 		xhttp.open("POST", `/delete_host?host_ip=${ip}`, false); // синхронный запрос
 		xhttp.send();
-		window.location.reload(true); // загрузка страницы с сервера
+		window.location.reload(false); // загрузка страницы с сервера
+	}
+}
+function deleteRule(ip,srv) {
+	// запросим подтверждение
+	if (window.confirm(`Вы уверены?`)) {
+		// нужно послать запрос с параметром host_ip
+		let xhttp = new XMLHttpRequest();
+		xhttp.open("POST", `/delete_rule?host_ip=${ip}&service=${srv}`, false); // синхронный запрос
+		xhttp.send();
+		window.location.reload(false); // загрузка страницы с сервера
 	}
 }
 
@@ -91,7 +101,7 @@ function addRule(ip) {
 		let xhttp = new XMLHttpRequest();
 		xhttp.open("POST", `/add_rule?host_ip=${ip}&service=${service}`, false);
 		xhttp.send();
-		window.location.reload(true); // загрузка страницы с сервера
+		window.location.reload(false); // загрузка страницы с сервера
 	}
 	else
 		alert ("Некорректный сервис!");
@@ -101,11 +111,22 @@ function unblockService(ip,srv) {
 	let xhttp = new XMLHttpRequest();
 	xhttp.open("POST", `/unblock_service?host_ip=${ip}&service=${srv}`, false);
 	xhttp.send();
-	window.location.reload(true); // загрузка страницы с сервера
+	window.location.reload(false); // загрузка страницы с сервера
 }
 function blockService(ip,srv) {
 	let xhttp = new XMLHttpRequest();
 	xhttp.open("POST", `/block_service?host_ip=${ip}&service=${srv}`, false);
 	xhttp.send();
-	window.location.reload(true); // загрузка страницы с сервера
+	window.location.reload(false); // загрузка страницы с сервера
+}
+
+function changeHostName(ip) {
+	// Спрашиваем новое имя хоста
+	let host_name = prompt('Введите новое имя хоста:');
+	if (host_name != null) {
+		let xhttp = new XMLHttpRequest();
+		xhttp.open("POST", `/rename_host?host_name=${host_name}&ip=${ip}`, false);
+		xhttp.send();
+		window.location.reload(false); // загрузка страницы с сервера
+	}
 }

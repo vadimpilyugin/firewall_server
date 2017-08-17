@@ -75,7 +75,9 @@ public
 		# убрать существующие правила
 		flush_services_for_host host
 		# удалить правило
-		Host.get(ip).services.get(service).destroy
+		Printer::debug msg:host.services.inspect
+		Printer::debug msg:host.services.first(name:service)
+		host.services.first(name:service).destroy
 		# применить обратно с изменениями
 		restore_services_for_host host
 		Printer::debug msg:"Удалили сервис #{service} для хоста #{ip}"
@@ -204,6 +206,14 @@ public
 		Firewall.destroy
 		Printer::debug msg:"Правила очищены"
 	end
+	def rename_host(ip,new_name)
+		# получаем объект файервола
+		fwl = Firewall.first 
+		# получаем хост
+		host = fwl.hosts.get(ip)
+		# ставим новое имя
+		host.update(name:new_name)
+	end
 	def turn_off_firewall
 		remove_link_from_forward
 	end
@@ -269,33 +279,14 @@ private
 		`iptables -F #{host.tname}`
 		`iptables -X #{host.tname}`
 	end
-	def apply_rules_for_site(service,rules)
-		tname = Host::BLOCK_PREFIX+service
-		# FIXME: не проверяем, существует ли таблица
-		`iptables -N #{tname}` # создаем таблицу проверки трафика на принадлежность сервису
-		rules.each { |rule| `iptables -A #{tname} #{rule}` } # добавляем правила
-		`iptables -A #{tname} -j RETURN` # выходим, если правила не удалось применить
-	end
 	def apply_rules_for_sites
-		Site.all.each {|site| apply_rules_for_site(site.id, site.rules)}
-		# apply_rules_for_site "youtube", [
-		#   '-s 173.194.0.0/16 -p tcp -j DROP',
-		#   '-d 173.194.0.0/16 -p tcp -j DROP',
-		#   '-s 74.125.0.0/16 -p tcp -j DROP',
-		#   '-d 74.125.0.0/16 -p tcp -j DROP',
-		#   '-s 5.0.0.0/8 -p tcp -j DROP',
-		#   '-d 5.0.0.0/8 -p tcp -j DROP',
-		#   '-p udp -m udp --sport 443 -j DROP',
-		#   '-p udp -m udp --dport 443 -j DROP',
-		#   '-s 74.125.232.0/24 -j DROP',
-		#   '-d 74.125.232.0/24 -j DROP'
-		# ]
-		# apply_rules_for_site "shararam", [
-		#   '-s 109.239.130.3 -p tcp -j DROP',
-		#   '-d 109.239.130.3 -p tcp -j DROP',
-		#   '-s 109.239.130.2 -p tcp -j DROP',
-		#   '-d 109.239.130.2 -p tcp -j DROP'
-		# ]
+		Site.each do |site|
+			Printer::debug who:"Фильтрация сайта",msg:site.name
+			tname = Host::BLOCK_PREFIX+site.id
+			`iptables -N #{tname}` # создаем таблицу проверки трафика на принадлежность сервису
+			site.rules.each { |rule| `iptables -A #{tname} #{rule.rule}`; Printer::debug(who:"Правило", msg:"iptables -A #{tname} #{rule.rule}")} # добавляем правила
+			`iptables -A #{tname} -j RETURN` # выходим, если правила не удалось применить
+		end
 	end
 	def create_link_from_forward
 		`iptables -A FORWARD -j blocklist`

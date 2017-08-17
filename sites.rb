@@ -69,8 +69,12 @@ class SiteModel
 			url:"vk.com",
 			icon:"/img/vk.png",
 			rules:[
-			  Rule.new(rule:'-s 87.240.182.229 -p tcp -j DROP'),
-			  Rule.new(rule:'-d 87.240.182.229 -p tcp -j DROP'),
+				
+			  Rule.new(rule:'-s 87.240.182.0/24 -p tcp -j DROP'),
+			  Rule.new(rule:'-d 87.240.182.0/24 -p tcp -j DROP'),
+
+			  Rule.new(rule:'-s 87.240.165.0/24 -p tcp -j DROP'),
+			  Rule.new(rule:'-d 87.240.165.0/24 -p tcp -j DROP'),
 
 			  Rule.new(rule:'-s 95.213.0.0/16 -p tcp -j DROP'),
 			  Rule.new(rule:'-d 95.213.0.0/16 -p tcp -j DROP'),
