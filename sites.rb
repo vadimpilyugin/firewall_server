@@ -1,31 +1,7 @@
-require 'rubygems'
-require 'data_mapper' # requires all the gems listed above
-
-class Site
-	include DataMapper::Resource
-
-	property :id, String, :key => true	# ловеркейсом, уникальное
-	property :name, String, :required => true	# читабельное, для человека
-	property :url, String
-	property :icon, String, :length => 100, :default => "/img/blank.gif"
-	property :descr, String, :length => 200, :default => "No description"
-
-	has n, :rules
-end
-
-class Rule
-	include DataMapper::Resource
-
-	property :id, Serial
-	property :rule, String, :length => 100
-end
+require_relative 'db'
 
 class SiteModel
 	def self.create_all
-		# финализовать модели
-		# DataMapper.finalize
-		# подключиться к базе данных
-		# DataMapper.setup :default, "sqlite3:///#{file}"
 		# Сначала очистить старые данные
 		drop
 		# YouTube

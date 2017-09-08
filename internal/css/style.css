@@ -1,31 +1,17 @@
-.gravity-right {
-  float:right;
-}
 .service-name {
   font-family: 'Helvetica';
   font-size: 20px;
-  text-align: center;
-}
-
-.time-block {
-  font-size: 25px;
-  color: red;
-  text-align: center;
-}
-.time-unblock {
-  font-size: 25px;
-  color: #4caf50;
-  text-align: center;
-}
-.center {
-  text-align: center;
+  text-align: left;
 }
 
 .menu-thumb {
   width: 50px; 
   height: 50px;
-  margin-right: 16px;
-  margin-left: 80px;
+  margin-left: 5%;
+}
+
+.menu-name {
+  margin-left: 5%;
 }
 
 .head-thumb {
@@ -37,29 +23,21 @@
 
 }
 
-.btn-control {
-  background-color: #4caf50;
-}
-
 .host-name {
   font-family: 'Helvetica';
   font-size: 25px;
 }
 
-ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #f3f3f3;
+.header-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #f3f3f3;
 }
 
-li {
-    float: left;
-}
-
-.active {
-    background-color: #4CAF50;
+.header-item {
+  float: left;
 }
 
 .head-title {
@@ -76,7 +54,7 @@ li {
 }
 
 .td-links {
-  text-align: right;
+  text-align: left;
 }
 
 .btn-td {
@@ -85,15 +63,20 @@ li {
 }
 
 .trash-td {
-  margin-left: 40px;
+  margin-left: 5%;
 }
 
+.table td {
+  padding: 0.75rem;
+  max-width: 50%;
+}
+/* Google Material Icons Pack */
 /* fallback */
 @font-face {
   font-family: 'Material Icons';
   font-style: normal;
   font-weight: 400;
-  src: url(https://fonts.gstatic.com/s/materialicons/v28/2fcrYFNaTjcS6g4U3t-Y5ZjZjT5FdEJ140U2DJYC3mY.woff2) format('woff2');
+  src: url(/css/2fcrYFNaTjcS6g4U3t-Y5ZjZjT5FdEJ140U2DJYC3mY.woff2) format('woff2');
 }
 
 .material-icons {

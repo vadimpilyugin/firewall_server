@@ -1,42 +1,9 @@
 require 'rubygems'
-require 'data_mapper' # requires all the gems listed above
+require 'data_mapper'
+
 require_relative 'sites'
-require_relative 'tools'
-
-class Host
-	BLOCK_PREFIX="block_"
-
-	include DataMapper::Resource
-
-	# property :id, Serial
-	property :ip, String, :key => true
-	property :name, String
-	property :is_blocked, Boolean, :default => true
-
-	has n, :services
-
-	def tname
-		return "host-#{self.ip}"
-	end
-	def tblock
-		return "blk-#{self.ip}"
-	end
-end
-
-class Service
-	include DataMapper::Resource
-
-	property :id, Serial
-	property :name, String, :required => true
-	property :is_filtered, Boolean, :default => true
-end
-
-class Firewall
-	include DataMapper::Resource
-
-	property :id, Serial
-	has n, :hosts
-end
+require_relative 'printer'
+require_relative 'db'
 
 class HostModel
 public
@@ -107,7 +74,7 @@ public
 		# финализовать модели
 		DataMapper.finalize
 		# подключиться к базе данных
-		DataMapper.setup :default, "sqlite3:///#{file}"
+		DataMapper.setup :default, "sqlite3://#{Dir.pwd}/#{file}"
 		# подогнать схему
 		DataMapper.auto_upgrade!
 		# Raise on save!
@@ -321,7 +288,7 @@ class ArpspoofModel
 		end
 		if !@pid_list.has_key?(ip)
 			# создает новый процесс, с той же группой
-			@pid_list.update(ip => spawn("arpspoof -t #{ip} -r #{router_ip} 2>1 1>/dev/null"))
+			@pid_list.update(ip => spawn("arpspoof -t #{ip} -r #{router_ip} &>/dev/null"))
 			Printer::debug msg:"Запустили процесс [#{@pid_list[ip]}] на ip #{ip}"
 		end
 	end

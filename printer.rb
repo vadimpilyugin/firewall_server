@@ -1,13 +1,5 @@
 require 'fileutils'
 require 'pp'
-
-class MatchData
-  def to_h
-    a = self.captures.delete_if {|e| e == nil}
-    self.names.zip(a).to_h
-  end
-end
-
 class String 
   # @private
   def colorize(i)
@@ -199,28 +191,5 @@ class Printer
         hsh[:params].my_pp
       end
     end
-  end
-end
-
-# Class that contains some helpful methods
-class Tools
-  @homedir = File.expand_path("../../", __FILE__)
-  # Printer::debug(msg:"Root directory of the project was set to #{@homedir}", who:"Tools")
-public
-  # Get absolute path
-  # @param [String] path relative path that begins in the project's home directory
-  # @return [String] absolute path
-  def Tools.abs_path(path)
-    if path[0] == '/'
-      return path
-    else
-      return @homedir[-1] == '/' ? @homedir+path : @homedir+'/'+path
-    end
-  end
-
-  # Get the project's home directory
-  # @return [String] home directory of the project
-  def Tools.homedir
-    @homedir
   end
 end

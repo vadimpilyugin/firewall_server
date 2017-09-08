@@ -2,27 +2,32 @@ doctype html
 html
   == slim :head
   body
-    div class="section"
+    div class="container-fluid"
       div class="row"
-        div class="col-sm-1"
-        div class="col-sm-10"
-          ul
-            li 
+        div class="col-md-2"
+        div class="col-md-8"
+          ul class="header-list"
+            li class="header-item"
               img href="#" class="head-thumb" src="/img/firewall.png"
-            li class="head-title" Firewall Pro 9000
-        div class="col-sm-1"
+            li class="head-title header-item" My Awesome Firewall
+        div class="col-md-2"
       div class="row"
-        div class="col-sm-2"
-        div class="col-sm-7"
+        div class="col-md-2"
+        div class="col-md-8"
           - if @hosts.nil? || @hosts.empty?
-            == empty_firewall
+            p
+              h4
+                | Файервол пуст. Добавьте цели!
           - else
             table class="table table-condensed"
               tbody
                 - @hosts.each do |host|
                   tr 
                     td class="host-name" 
-                      div title="#{host.ip}" #{host.name.nil? || host.name.empty? ? "Хост #{host.ip}" : host.name} <a onclick="changeHostName('#{host.ip}')" href="#"><i class="material-icons">edit</i></a>
+                      div title="#{host.ip}" 
+                        span #{host.name.nil? || host.name.empty? ? "Хост #{host.ip}" : host.name} 
+                        a onclick="changeHostName('#{host.ip}')" href="#"
+                          i class="material-icons" edit
                     td colspan="3" class="td-links"
                       button type="button" class="btn btn-link" onclick="addRule('#{host.ip}')" Добавить правило
                       button type="button" class="btn btn-link" onclick="deleteHost('#{host.ip}')" Удалить хост
@@ -33,11 +38,11 @@ html
                     - host.services.sort{|a,b| a.name <=> b.name}.each do |srv|
                       - site = Site.first(id:srv.name)
                       tr
-                        td style="text-align: left" class="service-name"
+                        td class="service-name"
                           button type="button" class="btn btn-outline-danger trash-td" onclick="deleteRule('#{host.ip}','#{srv.name}')"
                             i class="material-icons" delete
                           img src="#{site.icon}" alt="#{site.name}" class="menu-thumb"
-                          == site.name
+                          span class="menu-name" #{site.name}
                         td 
                           - if srv.is_filtered
                             button class="btn btn-outline-danger btn-td" onclick="unblockService('#{host.ip}','#{srv.name}')" Блокировка включена
@@ -45,4 +50,4 @@ html
                             button class="btn btn-outline-success btn-td" onclick="blockService('#{host.ip}','#{srv.name}')" Блокировка отключена
 
           button type="button" class="btn btn-outline-primary btn-lg btn-block" onclick="addTarget()" Добавить цели
-        div class="col-sm-2"
+        div class="col-md-2"

@@ -1,0 +1,11 @@
+server:
+  # Адрес, на котором надо запустить сервер
+  bind_to: 127.0.0.1
+  port: 4567
+  # HTTP Basic Auth
+  login: admin
+  password: elengsbet
+arpspoof:
+  # Нужно ли выдавать себя за роутер
+  enable: false
+  gateway: 192.168.1.1
